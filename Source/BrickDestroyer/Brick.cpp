@@ -8,12 +8,11 @@
 
 #include "Ball.h"
 
-// Sets default values
+
+const float SpeedModifierOnBounce = 1.01f;
+
 ABrick::ABrick()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
@@ -23,19 +22,11 @@ ABrick::ABrick()
 	RootComponent = BoxCollision;
 }
 
-// Called when the game starts or when spawned
 void ABrick::BeginPlay()
 {
 	Super::BeginPlay();
 	
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &ABrick::OnOverlapBegin);
-}
-
-// Called every frame
-void ABrick::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
 }
 
 void ABrick::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
@@ -45,9 +36,7 @@ void ABrick::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AAc
 	if (OtherActor->ActorHasTag("Ball"))
 	{
 		ABall* Ball = Cast<ABall>(OtherActor);
-		FVector BallVelocity = Ball->GetVelocity();
-		BallVelocity *= SpeedModifierOnBounce - 1.0f;
-		Ball->GetMesh()->SetPhysicsLinearVelocity(BallVelocity, true);
+		Ball->GetMesh()->SetPhysicsLinearVelocity(Ball->GetVelocity() * SpeedModifierOnBounce);
 
 		FTimerHandle UnusedHandle;
 		GetWorldTimerManager().SetTimer(UnusedHandle, this, &ABrick::DestroyBrick, 0.1f, false);

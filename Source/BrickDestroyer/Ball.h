@@ -18,21 +18,15 @@ public:
 	ABall();
 	virtual void Launch();
 
-	bool BallLaunched;
+	UFUNCTION()
+		UStaticMeshComponent* GetMesh();
 
 protected:
-	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		UStaticMeshComponent* Mesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		UProjectileMovementComponent* Movement;
-
-public:	
-	virtual void Tick(float DeltaTime) override;
-
-	UFUNCTION()
-		UStaticMeshComponent* GetMesh();
 
 };

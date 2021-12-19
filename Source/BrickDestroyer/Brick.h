@@ -14,11 +14,9 @@ class BRICKDESTROYER_API ABrick : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	ABrick();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -27,17 +25,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		UBoxComponent* BoxCollision;
 
-	float SpeedModifierOnBounce = 1.01f;
-
 	UFUNCTION()
 		void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
 			class UPrimitiveComponent* OtherComp, int32 OtherBodyIndexType, bool bFromSweep,
 				const FHitResult& SweepResult);
 
 	void DestroyBrick();
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 };

@@ -10,11 +10,11 @@
 #include "Ball.h"
 
 APaddle* Paddle;
+ABall* BallInstance;
 
-APaddleController::APaddleController()
-{
+const FVector BallSpawnLocation = FVector(10.0f, 0.0f, 40.0f);
 
-}
+APaddleController::APaddleController(){}
 
 void APaddleController::BeginPlay()
 {
@@ -44,14 +44,16 @@ void APaddleController::MoveHorizontal(float AxisValue)
 
 void APaddleController::Launch()
 {
-    BallInstance->Launch();
+    if (BallInstance)
+        BallInstance->Launch();
+    else
+        UE_LOG(LogTemp, Error, TEXT("No spawned ball"));
 }
 
 void APaddleController::SpawnNewBall()
 {
-    if (!BallInstance)
-        BallInstance = nullptr;
-
-    if (BallObj)
-        BallInstance = GetWorld()->SpawnActor<ABall>(BallObj, SpawnLocation, SpawnRotation, SpawnInfo);
+    if (BallClass)
+        BallInstance = GetWorld()->SpawnActor<ABall>(BallClass, BallSpawnLocation, FRotator::ZeroRotator);
+    else
+        UE_LOG(LogTemp, Error, TEXT("Ball reference not set"));
 }

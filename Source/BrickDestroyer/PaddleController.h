@@ -13,29 +13,21 @@ class BRICKDESTROYER_API APaddleController : public APlayerController
 {
 	GENERATED_BODY()
 
-	APaddleController();
-
 	UFUNCTION()
 		virtual void SetupInputComponent() override;
 
+public:
+	APaddleController();
+	void SpawnNewBall();
+
 protected:
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<ABall> BallClass;
 
 	virtual void BeginPlay() override;
 
 	void MoveHorizontal(float AxisValue);
 	void Launch();
-
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<ABall> BallObj;
-
-	ABall* BallInstance;
-
-	FVector SpawnLocation = FVector(10.0f, 0.0f, 40.0f);
-	FRotator SpawnRotation = FRotator::ZeroRotator;
-	FActorSpawnParameters SpawnInfo;
-
-public:
-
-	void SpawnNewBall();
 	
 };
